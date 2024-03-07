@@ -26,13 +26,13 @@ app.use(express.json()); // for json
 app.use(express.urlencoded({ extended: true })); // for form data
 
 // config cookie parser
-// app.use(cookieParser());
+app.use(cookieParser());
 
 // config routes
 initRoutes(app);
 
 // config database
-// connectDB();
+connectDB();
 
 app.listen(PORT, () => {
   console.log(`Server running on: http://${HOST_NAME}:${PORT}`);
