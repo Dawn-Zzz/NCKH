@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "https://youtube.googleapis.com/youtube/v3/",
-  //   withCredentials: true,
+  baseURL: "https://utc2.edu.vn/api/v1.0/",
+  // withCredentials: true,
 });
 
 instance.interceptors.response.use(

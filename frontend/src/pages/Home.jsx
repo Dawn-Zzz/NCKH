@@ -16,6 +16,20 @@ const Home = () => {
     <>
       Home
       <div>
+        <NavLink
+          to="/profile"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          profile
+        </NavLink>
+        <NavLink
+          to="/post"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          post
+        </NavLink>
+      </div>
+      <div>
         <button
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           onClick={() => {
@@ -24,14 +38,6 @@ const Home = () => {
         >
           logout
         </button>
-      </div>
-      <div>
-        <NavLink
-          to="/profile"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          profile
-        </NavLink>
       </div>
     </>
   );

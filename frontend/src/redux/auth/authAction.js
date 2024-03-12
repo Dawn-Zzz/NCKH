@@ -52,8 +52,6 @@ export const handleLogin = (name, email) => {
 
     let res = await loginAPI(name, email);
 
-    console.log(res);
-
     if (res) {
       if (res.code === 0) {
         // Đăng nhập thành công
@@ -77,7 +75,6 @@ export const handleRefresh = () => {
     dispatch(refresh());
 
     let res = await refreshAPI();
-    console.log("res", res);
 
     if (res) {
       if (res.code === 0) {
