@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { handleRefresh } from "../redux/auth/authAction";
 import Post from "../pages/Post";
+import Header from "../components/Header";
 
 const AppRoutes = () => {
   return (
