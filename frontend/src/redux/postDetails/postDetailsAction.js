@@ -1,21 +1,22 @@
-import toast from "react-hot-toast";
-import { getPostByIdAPI } from "../../services/postService";
+import { getPostDetailByIdAPI } from "../../services/postService";
 import {
   getPostById,
   getPostByIdError,
   getPostByIdSuccess,
 } from "./postDetailsSlice";
 
-export const handleGetPostById = (postId) => {
+export const handleGetPostDetailById = (postId) => {
   return async (dispatch, getState) => {
     dispatch(getPostById());
 
-    let res = await getPostByIdAPI(postId);
+    let res = await getPostDetailByIdAPI(postId);
 
-    console.log("getPostById", res);
-
-    if (res.status === "success") {
-      dispatch(getPostByIdSuccess(res.responseData));
+    if (res) {
+      if (res.code === 0) {
+        dispatch(getPostByIdSuccess(res.postDetail));
+      } else {
+        dispatch(getPostByIdError());
+      }
     } else {
       dispatch(getPostByIdError());
     }

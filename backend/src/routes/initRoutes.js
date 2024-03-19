@@ -1,9 +1,12 @@
 const express = require("express");
-const router = express.Router();
 const authRoute = require("./authRoute");
+const postRoute = require("./postRoute");
+const commentRoute = require("./commentRoute");
 
 let initRoutes = (app) => {
   app.use("/api/auth", authRoute);
+  app.use("/api/post", postRoute);
+  app.use("/api/comment", commentRoute);
 
   return app;
 };

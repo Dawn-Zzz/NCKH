@@ -1,17 +1,17 @@
-import utc2Api from "../api/utc2Api";
+import backendApi from "../api/backendApi";
 
-export const getPostAPI = () => {
-  return utc2Api.get("/post", {
-    params: {
-      currentPage: 1,
-      pageSize: 10,
-      sortField: "created_at",
-      sortOrder: "DESC",
-      filters: "type==STUDENT_ANNOUNCEMENT,display==true",
+export const createPost = (formData) => {
+  return backendApi.post(`/api/post/createPost`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
     },
   });
 };
 
-export const getPostByIdAPI = (postId) => {
-  return utc2Api.get(`/post/${postId}`);
+export const getPostsAPI = () => {
+  return backendApi.get(`/api/post/getPosts`);
+};
+
+export const getPostDetailByIdAPI = (postId) => {
+  return backendApi.get(`/api/post/getPostDetail/${postId}`);
 };

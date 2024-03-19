@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { handleLogin } from "../redux/auth/authAction";
-import { TbSocial } from "react-icons/tb";
 import TextInput from "../components/TextInput";
 import { BsShare } from "react-icons/bs";
 import { AiOutlineInteraction } from "react-icons/ai";
 import { ImConnection } from "react-icons/im";
 import CustomButton from "../components/CustomButton";
+import logo_utc2 from "../assets/logo_utc2.png";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -18,19 +18,18 @@ const Login = () => {
   const onclickLogin = () => {
     dispatch(handleLogin(email, password));
   };
-  console.log(email, password);
+
   return (
     <div className="bg-bgColor w-full h-[100vh] flex items-center justify-center p-6">
       <div className="w-full md:w-2/3 h-fit lg:h-full 2xl:h-5/6 py-8 lg:py-0 flex bg-primary rounded-xl overflow-hidden shadow-xl">
         {/* LEFT */}
         <div className="w-full lg:w-1/2 h-full p-10 2xl:px-20 flex flex-col justify-center ">
           <div className="w-full flex gap-2 items-center mb-6">
-            <div className="p-2 bg-[#065ad8] rounded text-white">
-              <TbSocial />
+            <div className="rounded text-white w-20">
+              <img src={logo_utc2} alt="" />
             </div>
-            <span className="text-2xl text-[#065ad8] font-semibold">
-              ShareFun
-            </span>
+
+            <span className="text-2xl text-[#065ad8] font-semibold">NCKH</span>
           </div>
 
           <p className="text-ascent-1 text-base font-semibold">
@@ -116,7 +115,7 @@ const Login = () => {
           </p>
         </div>
         {/* RIGHT */}
-        <div className="hidden w-1/2 h-full lg:flex flex-col items-center justify-center bg-blue">
+        <div className="hidden w-1/2 h-full lg:flex flex-col items-center justify-center bg-yellow">
           <div className="relative w-full flex items-center justify-center">
             <img
               // src={BgImage}

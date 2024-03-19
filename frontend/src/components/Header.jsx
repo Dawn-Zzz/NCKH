@@ -7,8 +7,10 @@ import CustomButton from "./CustomButton";
 // import { useForm } from "react-hook-form";
 import { BsMoon, BsSunFill } from "react-icons/bs";
 import { IoMdNotificationsOutline } from "react-icons/io";
+import { handleLogout, handleRefresh } from "../redux/auth/authAction";
 // import { SetTheme } from "../redux/theme";
 // import { Logout } from "../redux/userSlice";
+import logo_utc2 from "../assets/logo_utc2.png";
 
 const Header = () => {
   //   const { theme } = useSelector((state) => state.theme);
@@ -28,14 +30,24 @@ const Header = () => {
 
   //   const handleSearch = async (data) => {};
 
+  const dispatch = useDispatch();
+
+  const onClickLogout = () => {
+    const confirmed = window.confirm("Bạn có chắc chắn muốn đăng xuất?");
+    if (confirmed) {
+      dispatch(handleLogout());
+      dispatch(handleRefresh());
+    }
+  };
+
   return (
-    <div className="topbar w-full flex items-center justify-between py-3 md:py-6 px-4 bg-primary">
+    <div className="topbar w-full flex items-center justify-between py-3 md:py-3 px-4 bg-primary">
       <Link to="/" className="flex gap-2 items-center">
-        <div className="p-1 md:p-2 bg-[#065ad8] rounded text-white">
-          <TbSocial />
+        <div className="p-1 md:p-2 w-16 rounded text-white">
+          <img src={logo_utc2} alt="" />
         </div>
         <span className="text-xl md:text-2xl text-[#065ad8] font-semibold">
-          ShareFun
+          NCKH
         </span>
       </Link>
 
@@ -45,7 +57,7 @@ const Header = () => {
       >
         <TextInput
           placeholder="Search..."
-          styles="w-[18rem] lg:w-[38rem]  rounded-l-full py-3 "
+          styles="w-[20rem] lg:w-[30rem]  rounded-l-full py-3 "
           //   register={register("search")}
         />
         <CustomButton
@@ -66,7 +78,7 @@ const Header = () => {
 
         <div>
           <CustomButton
-            // onClick={() => dispatch(Logout())}
+            onClick={() => onClickLogout()}
             title="Log Out"
             containerStyles="text-sm text-ascent-1 px-4 md:px-6 py-1 md:py-2 border border-[#666] rounded-full"
           />

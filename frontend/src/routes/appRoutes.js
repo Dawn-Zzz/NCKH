@@ -6,8 +6,8 @@ import Profile from "../pages/Profile";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { handleRefresh } from "../redux/auth/authAction";
-import Post from "../pages/Post";
-import Header from "../components/Header";
+import PostDetailsUtc2 from "../components/PostDetailsUtc2";
+import PostDetails from "../components/PostDetails";
 
 const AppRoutes = () => {
   return (
@@ -17,8 +17,8 @@ const AppRoutes = () => {
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Home />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/post" element={<Post />} />
-        <Route path="/post/:postId" element={<Post />} />
+        <Route path="/student/post/:postUtc2Id" element={<PostDetailsUtc2 />} />
+        <Route path="/community/post/:postId" element={<PostDetails />} />
         <Route path="*" element={<Home />} />
       </Routes>
     </>

@@ -3,10 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const postSlice = createSlice({
   name: "post",
   initialState: {
-    count: "",
-    currentPage: "",
-    totalPages: "",
-    rows: [],
+    posts: [],
 
     isLoading: false,
     isError: false,
@@ -16,19 +13,13 @@ export const postSlice = createSlice({
       state.isLoading = true;
     },
     getPostError: (state) => {
-      state.count = "";
-      state.currentPage = "";
-      state.totalPages = "";
-      state.rows = [];
+      state.posts = [];
 
       state.isLoading = false;
       state.isError = true;
     },
     getPostSuccess: (state, action) => {
-      state.count = action.payload.count;
-      state.currentPage = action.payload.currentPage;
-      state.totalPages = action.payload.totalPages;
-      state.rows = action.payload.rows;
+      state.posts = action.payload;
 
       state.isLoading = false;
       state.isError = false;

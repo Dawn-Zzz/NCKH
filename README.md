@@ -1,6 +1,6 @@
 # Backend
 
-(npm install express dotenv body-parser ejs mongoose bcrypt validator jsonwebtoken @babel/core @babel/node @babel/preset-env nodemon cors cookie-parser)
+(npm install express dotenv body-parser ejs mongoose bcrypt validator jsonwebtoken @babel/core @babel/node @babel/preset-env nodemon cors cookie-parser multer)
 
 1. Tạo file .env tương ứng với .env.example
 2. Run project: npm install -> npm start
