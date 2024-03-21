@@ -6,5 +6,10 @@ const router = express.Router();
 router.post("/createComment", checkJWT, commentController.createComment);
 
 router.post("/createReply", checkJWT, commentController.createReply);
+router.get(
+  "/getReplyByCommentId/:commentId",
+  checkJWT,
+  commentController.getReplyByCommentId
+);
 
 module.exports = router;

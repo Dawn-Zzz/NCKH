@@ -32,7 +32,7 @@ const postSchema = new mongoose.Schema(
     ],
     likes: [
       {
-        type: String,
+        user: { type: String },
       },
     ],
     comments: [

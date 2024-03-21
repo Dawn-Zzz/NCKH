@@ -105,6 +105,7 @@ let createReply = async (req, res) => {
     res.status(200).json({
       code: 0,
       message: "Phản hồi thành công",
+      commentId: comment._id,
       reply: replyInfo,
     });
   } catch (error) {
@@ -116,4 +117,56 @@ let createReply = async (req, res) => {
   }
 };
 
-module.exports = { createComment, createReply };
+let getReplyByCommentId = async (req, res) => {
+  try {
+    const commentId = req.params.commentId;
+
+    const userId = req.userId;
+
+    if (!commentId) {
+      throw {
+        code: 1,
+        message: "Lỗi: Thông tin chưa đủ",
+      };
+    }
+
+    let user = await userModel.findById(userId);
+    if (!user) {
+      throw {
+        code: 1,
+        message: "Đã có lỗi xảy ra: Không tìm thấy user",
+      };
+    }
+
+    // Lấy thông tin của reply vừa được tạo
+
+    const comment = await commentModel.findById(commentId).populate({
+      path: "replies",
+      populate: {
+        path: "user",
+        select: "name pic",
+      },
+    });
+
+    if (!comment) {
+      throw {
+        code: 1,
+        message: "Đã có lỗi xảy ra: Không tìm thấy bình luận",
+      };
+    }
+
+    res.status(200).json({
+      code: 0,
+      message: "Lấy phản hồi theo bình luận thành công",
+      comment,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(200).json({
+      code: error.code || 1,
+      message: error.message || "Đã có lỗi xảy ra khi tạo phản hồi",
+    });
+  }
+};
+
+module.exports = { createComment, createReply, getReplyByCommentId };

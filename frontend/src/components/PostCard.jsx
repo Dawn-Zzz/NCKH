@@ -1,9 +1,15 @@
 import { Link } from "react-router-dom";
 import moment from "moment";
 import "moment/locale/vi";
+import { useEffect, useState } from "react";
 
 const PostCard = ({ post }) => {
   moment.locale("vi");
+  const [totalLike, setTotalLike] = useState(0);
+
+  useEffect(() => {
+    setTotalLike(post?.likes?.length);
+  }, [post.likes]);
 
   return (
     <Link to={`/community/post/${post._id}`}>
@@ -20,7 +26,9 @@ const PostCard = ({ post }) => {
             <span className="text-ascent-2">
               {moment(post.updatedAt).fromNow()}
             </span>
-            <span className="text-ascent-1">{post.user.name}</span>
+            <span className="text-ascent-1">
+              {post.user.name} - Lượt thích: {totalLike}
+            </span>
           </div>
         </div>
       </div>

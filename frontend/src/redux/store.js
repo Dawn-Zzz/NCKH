@@ -5,6 +5,7 @@ import postDetailsSlice from "./postDetails/postDetailsSlice";
 import postUtc2Slice from "./postUtc2/postUtc2Slice";
 import postDetailsUtc2Slice from "./postDetailsUtc2/postDetailsUtc2Slice";
 import commentSlice from "./comment/commentSlice";
+import replySlice from "./reply/replySlice";
 
 export default configureStore({
   reducer: {
@@ -17,5 +18,6 @@ export default configureStore({
     postDetails: postDetailsSlice,
 
     comment: commentSlice,
+    reply: replySlice,
   },
 });

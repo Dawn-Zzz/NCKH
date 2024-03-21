@@ -10,3 +10,7 @@ export const createReplyAPI = (content, commentId) => {
     commentId,
   });
 };
+
+export const getReplyByCommentIdAPI = (commentId) => {
+  return backendApi.get(`/api/comment/getReplyByCommentId/${commentId}`);
+};

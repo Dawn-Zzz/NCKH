@@ -24,9 +24,31 @@ export const postSlice = createSlice({
       state.isLoading = false;
       state.isError = false;
     },
+    toggleLikePost: (state) => {
+      state.isLoading = true;
+    },
+    toggleLikePostError: (state) => {
+      state.posts = [];
+
+      state.isLoading = false;
+      state.isError = true;
+    },
+    toggleLikePostSuccess: (state, action) => {
+      state.posts = action.payload;
+
+      state.isLoading = false;
+      state.isError = false;
+    },
   },
 });
 
-export const { getPost, getPostError, getPostSuccess } = postSlice.actions;
+export const {
+  getPost,
+  getPostError,
+  getPostSuccess,
+  toggleLikePost,
+  toggleLikePostError,
+  toggleLikePostSuccess,
+} = postSlice.actions;
 
 export default postSlice.reducer;

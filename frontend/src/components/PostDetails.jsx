@@ -5,12 +5,15 @@ import { handleGetPostDetailById } from "../redux/postDetails/postDetailsAction"
 import Loading from "./Loading";
 import CustomCreateComment from "./CustomCreateComment";
 import CommentCard from "./CommentCard";
+import { handleToggleLikePost } from "../redux/post/postAction";
 
 const PostDetails = () => {
   const dispatch = useDispatch();
   const postDetails = useSelector((state) => state.postDetails);
+  const auth = useSelector((state) => state.auth);
   const { postId } = useParams();
   const [comments, setComments] = useState([]);
+  const [isLike, setIsLike] = useState();
 
   useEffect(() => {
     dispatch(handleGetPostDetailById(postId));
@@ -18,15 +21,25 @@ const PostDetails = () => {
 
   useEffect(() => {
     setComments(postDetails.post?.comments || []);
+    setIsLike(postDetails.post?.likes.some((like) => like.user === auth.id));
   }, [postDetails.post]);
 
   const addComment = (newComment) => {
     setComments([newComment, ...comments]);
   };
 
+  const onclickToggleLikePost = () => {
+    dispatch(handleToggleLikePost(postId));
+    setIsLike(!isLike); // Khi người dùng click để toggle like, cập nhật lại trạng thái của isLiked
+  };
+
   return (
     <div className="w-full px-0 lg:px-10 pb-20 2xl:px-40 bg-bgColor lg:rounded-lg h-screen overflow-auto">
-      <Link to="/community">Quay lại</Link>
+      <div className="p-2">
+        <Link to="/community">
+          <i class="fa-solid fa-arrow-left"></i> Quay lại
+        </Link>
+      </div>
 
       <div className="mb-2 bg-primary p-4 rounded-xl">
         <div className="flex flex-col gap-3 items-center mb-2">
@@ -65,6 +78,15 @@ const PostDetails = () => {
                       </div>
                     ))}
                   <br />
+
+                  <button className="pl-10" onClick={onclickToggleLikePost}>
+                    {isLike ? (
+                      <i class="fa-solid fa-thumbs-up"></i>
+                    ) : (
+                      <i class="fa-regular fa-thumbs-up"></i>
+                    )}
+                  </button>
+                  <br />
                   <CustomCreateComment
                     postId={postId}
                     addComment={addComment}
@@ -75,10 +97,10 @@ const PostDetails = () => {
                       <CommentCard key={index} comment={item} />
                     ))
                   ) : (
-                    <div className="flex w-full h-full items-center justify-center">
-                      <p className="text-lg text-ascent-2">
+                    <div className="mb-2 bg-primary p-4 rounded-xl">
+                      <div className="flex gap-3 items-center mb-2">
                         Bài viết chưa có bình luận nào.
-                      </p>
+                      </div>
                     </div>
                   )}
                 </>

@@ -2,7 +2,7 @@ import Header from "../components/Header";
 import FiltersCard from "../components/FiltersCard";
 import Sidebar from "../components/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Loading from "../components/Loading";
 import PostCardUtc2 from "../components/PostCardUtc2";
 import { handleGetNotificationPost } from "../redux/postUtc2/postUtc2Action";
@@ -15,8 +15,14 @@ const Home = () => {
   const dispatch = useDispatch();
   const postUtc2 = useSelector((state) => state.postUtc2);
   const post = useSelector((state) => state.post);
+  const [posts, setPosts] = useState([]);
 
   const isCommunityPath = window.location.pathname === "/community";
+
+  const addPost = (data) => {
+    setPosts((posts) => [data.post, ...posts]);
+    console.log("post mới", posts);
+  };
 
   useEffect(() => {
     if (isCommunityPath) {
@@ -25,6 +31,12 @@ const Home = () => {
       dispatch(handleGetNotificationPost());
     }
   }, [isCommunityPath]);
+
+  useEffect(() => {
+    if (post.posts && !post.isLoading) {
+      setPosts(post.posts);
+    }
+  }, [post]);
 
   return (
     <>
@@ -58,13 +70,13 @@ const Home = () => {
             ) : (
               <>
                 {/* Hiển thị khi /community */}
-                <CustomCreatePost />
+                <CustomCreatePost addPost={addPost} />
 
                 <>
                   {post.isLoading ? (
                     <Loading />
-                  ) : post?.posts?.length > 0 ? (
-                    post?.posts?.map((item) => <PostCard post={item} />)
+                  ) : posts.length > 0 ? (
+                    posts.map((item) => <PostCard post={item} />)
                   ) : (
                     <div className="flex w-full h-full items-center justify-center">
                       <p className="text-lg text-ascent-2">

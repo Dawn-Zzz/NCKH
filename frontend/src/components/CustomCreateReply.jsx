@@ -2,23 +2,23 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TextInput from "./TextInput";
 import CustomButton from "./CustomButton";
-import { handleCreateReply } from "../redux/comment/commentAction";
+import { createReplyAPI } from "../services/commentService";
+import toast from "react-hot-toast";
 
 const CustomCreateReply = ({ commentId, addReply }) => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
-  const comment = useSelector((state) => state.comment);
   const [content, setContent] = useState("");
 
-  useEffect(() => {
-    if (comment.reply) {
-      addReply(comment.reply);
+  const onclickCreateReply = async () => {
+    if (!content || !commentId) {
+      return toast.error("Hãy nhập nội dung");
+    } else {
+      await createReplyAPI(content, commentId).then((data) => {
+        addReply(data);
+      });
+      setContent("");
     }
-  }, [comment.reply]);
-
-  const onclickCreateReply = () => {
-    dispatch(handleCreateReply(content, commentId));
-    setContent("");
   };
 
   return (

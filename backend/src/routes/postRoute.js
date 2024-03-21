@@ -23,5 +23,6 @@ router.get(
   checkJWT,
   postController.getPostDetailById
 );
+router.post("/toggleLikePost", checkJWT, postController.toggleLikePost);
 
 module.exports = router;

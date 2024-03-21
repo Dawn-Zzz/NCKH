@@ -1,19 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TextInput from "./TextInput";
 import CustomButton from "./CustomButton";
 import { handleCreatePost } from "../redux/post/postAction";
+import { createPostAPI } from "../services/postService";
+import toast from "react-hot-toast";
 
-const CustomCreatePost = () => {
+const CustomCreatePost = ({ addPost }) => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
 
   const [content, setContent] = useState("");
+  const [loadCreatePost, setLoadCreatePost] = useState(false);
   const [title, setTitle] = useState("");
   const [images, setImages] = useState([]);
   const [files, setFiles] = useState([]);
 
   const onclickCreatePosts = async () => {
+    setLoadCreatePost(true);
+
     const formData = new FormData();
     formData.append("title", title);
     formData.append("content", content);
@@ -23,8 +28,34 @@ const CustomCreatePost = () => {
     for (let i = 0; i < files.length; i++) {
       formData.append("files", files[i]);
     }
-    dispatch(handleCreatePost(formData));
+
+    await toast.promise(createPostAPI(formData), {
+      loading: "Bài viết đang được tạo...",
+      success: (data) => {
+        setLoadCreatePost(false);
+        if (data.code === 0) {
+          addPost(data);
+          setTitle("");
+          setContent("");
+          setImages([]);
+          setFiles([]);
+          return data.message;
+        } else {
+          throw new Error(data.message);
+        }
+      },
+      error: (error) => {
+        setLoadCreatePost(false);
+        return error.message;
+      },
+    });
   };
+
+  // useEffect(() => {
+  //   if (loadCreatePost) {
+  //     toast.pendding("Bài viết đang được đăng");
+  //   }
+  // }, [loadCreatePost]);
 
   return (
     <div className="bg-primary px-4 rounded-lg">
@@ -75,10 +106,20 @@ const CustomCreatePost = () => {
 
         <div>
           <CustomButton
-            title="Post"
-            containerStyles="bg-[#0444a4] text-white py-1 px-6 rounded-full font-semibold text-sm"
+            title={
+              loadCreatePost ? (
+                <i className="fas fa-circle-notch fa-spin"></i>
+              ) : (
+                "Post"
+              )
+            }
+            containerStyles={`bg-[#0444a4] text-white py-1 px-6 rounded-full font-semibold text-sm ${
+              loadCreatePost && "pointer-events-none"
+            }`}
             onClick={() => {
-              onclickCreatePosts();
+              if (!loadCreatePost) {
+                onclickCreatePosts();
+              }
             }}
           />
         </div>

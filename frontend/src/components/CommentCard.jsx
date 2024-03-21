@@ -3,27 +3,55 @@ import "moment/locale/vi";
 import { useEffect, useState } from "react";
 import CustomCreateReply from "./CustomCreateReply";
 import ReplyCard from "./ReplyCard";
+import { useDispatch, useSelector } from "react-redux";
+import { handleGetReplyByCommentId } from "../redux/reply/replyAction";
+import Loading from "./Loading";
+import toast from "react-hot-toast";
 
-const CommentCard = ({ comment }) => {
+const CommentCard = ({ key, comment }) => {
+  moment.locale("vi");
+  const dispatch = useDispatch();
+  const reply = useSelector((state) => state.reply);
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [replies, setReplies] = useState([]);
 
-  moment.locale("vi");
+  const addReply = (data) => {
+    // Cố gắn tìm hướng giải quyết khác
+    let updatedReplies = replies.map((comment) => {
+      if (comment._id === data.commentId) {
+        return {
+          ...comment,
+          replies: [...comment.replies, data.reply],
+        };
+      }
+      return comment;
+    });
 
-  const toggleReplyForm = () => {
+    console.log("updatedReplies", updatedReplies);
+
+    setReplies(updatedReplies);
+  };
+
+  const toggleReplyForm = (commentId) => {
     setShowReplyForm(!showReplyForm);
+    if (!showReplyForm) {
+      dispatch(handleGetReplyByCommentId(commentId));
+    } else {
+      setReplies((prevReplies) =>
+        prevReplies.filter((reply) => reply._id !== commentId)
+      );
+    }
   };
 
   useEffect(() => {
-    setReplies(comment?.replies || []);
-  }, [comment.replies]);
-
-  const addReply = (newReply) => {
-    setReplies([newReply, ...replies]);
-  };
+    if (showReplyForm && !reply.isLoading) {
+      setReplies((prevReplies) => [...prevReplies, reply.data]);
+      console.log("check");
+    }
+  }, [showReplyForm, reply.data]);
 
   return (
-    <div className="mb-2 bg-primary p-4 rounded-xl">
+    <div key={key} className="mb-2 bg-primary p-4 rounded-xl">
       <div className="flex gap-3 items-center mb-2">
         <img
           src={comment.user.pic}
@@ -37,18 +65,39 @@ const CommentCard = ({ comment }) => {
           </span>
           <p className="font-small">{comment.content}</p>
           <span className="font-medium pt-1">
-            <button onClick={toggleReplyForm}>Phản hồi</button>
+            <button onClick={() => toggleReplyForm(comment._id)}>
+              Phản hồi
+            </button>
           </span>
         </div>
       </div>
-
-      {replies?.length > 0
-        ? replies?.map((item, index) => (
+      {replies._id === comment._id ? (
+        <>
+          {replies.replies?.length > 0 && showReplyForm && (
             <div className="ml-14">
-              <ReplyCard key={index} reply={item} />
+              {replies.replies?.map((reply, index) => (
+                <ReplyCard key={index} reply={reply} />
+              ))}
             </div>
-          ))
-        : null}
+          )}
+        </>
+      ) : null}
+
+      {replies.map((item, index) => (
+        <>
+          {item._id === comment._id ? (
+            <>
+              {item.replies.length > 0 && showReplyForm && (
+                <div className="ml-14">
+                  {item.replies.map((reply, index) => (
+                    <ReplyCard key={index} reply={reply} />
+                  ))}
+                </div>
+              )}
+            </>
+          ) : null}
+        </>
+      ))}
 
       {showReplyForm && (
         <div className="ml-11">
