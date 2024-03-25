@@ -9,15 +9,30 @@ const CustomCreateReply = ({ commentId, addReply }) => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const [content, setContent] = useState("");
+  const [loadCreateReply, setLoadCreateReply] = useState(false);
 
   const onclickCreateReply = async () => {
     if (!content || !commentId) {
       return toast.error("Hãy nhập nội dung");
     } else {
-      await createReplyAPI(content, commentId).then((data) => {
-        addReply(data);
+      setLoadCreateReply(true);
+      await toast.promise(createReplyAPI(content, commentId), {
+        loading: "Loading...",
+        success: (data) => {
+          setLoadCreateReply(false);
+          if (data.code === 0) {
+            addReply(data);
+            setContent("");
+            return data.message;
+          } else {
+            throw new Error(data.message);
+          }
+        },
+        error: (error) => {
+          setLoadCreateReply(false);
+          return error.message;
+        },
       });
-      setContent("");
     }
   };
 
@@ -38,10 +53,20 @@ const CustomCreateReply = ({ commentId, addReply }) => {
         />
 
         <CustomButton
-          title="Comment"
-          containerStyles="bg-[#0444a4] text-white py-3 px-10 rounded-full font-semibold text-sm"
+          title={
+            loadCreateReply ? (
+              <i className="fas fa-circle-notch fa-spin"></i>
+            ) : (
+              "Reply"
+            )
+          }
+          containerStyles={`bg-[#0444a4] text-white py-3 px-10 rounded-full font-semibold text-sm ${
+            loadCreateReply && "pointer-events-none"
+          }`}
           onClick={() => {
-            onclickCreateReply();
+            if (!loadCreateReply) {
+              onclickCreateReply();
+            }
           }}
         />
       </div>

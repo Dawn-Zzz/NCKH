@@ -6,14 +6,18 @@ import Loading from "./Loading";
 import CustomCreateComment from "./CustomCreateComment";
 import CommentCard from "./CommentCard";
 import { handleToggleLikePost } from "../redux/post/postAction";
+import { toggleLikePostAPI } from "../services/postService";
+import toast from "react-hot-toast";
 
 const PostDetails = () => {
   const dispatch = useDispatch();
   const postDetails = useSelector((state) => state.postDetails);
+  const post = useSelector((state) => state.post);
   const auth = useSelector((state) => state.auth);
   const { postId } = useParams();
   const [comments, setComments] = useState([]);
   const [isLike, setIsLike] = useState();
+  const [isLoadingLike, setIsLoadingLike] = useState(false);
 
   useEffect(() => {
     dispatch(handleGetPostDetailById(postId));
@@ -28,9 +32,24 @@ const PostDetails = () => {
     setComments([newComment, ...comments]);
   };
 
-  const onclickToggleLikePost = () => {
-    dispatch(handleToggleLikePost(postId));
+  const onclickToggleLikePost = async () => {
+    setIsLoadingLike(true);
+    await toast.promise(toggleLikePostAPI(postId), {
+      loading: "Loading...",
+      success: (data) => {
+        if (data.code === 0) {
+          return data.message;
+        } else {
+          throw new Error(data.message);
+        }
+      },
+      error: (error) => {
+        return error.message;
+      },
+    });
+
     setIsLike(!isLike); // Khi người dùng click để toggle like, cập nhật lại trạng thái của isLiked
+    setIsLoadingLike(false);
   };
 
   return (
@@ -78,14 +97,24 @@ const PostDetails = () => {
                       </div>
                     ))}
                   <br />
+                  {isLoadingLike ? (
+                    <>
+                      <button className="pl-10">
+                        <i className="fas fa-circle-notch fa-spin"></i>
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button className="pl-10" onClick={onclickToggleLikePost}>
+                        {isLike ? (
+                          <i class="fa-solid fa-thumbs-up"></i>
+                        ) : (
+                          <i class="fa-regular fa-thumbs-up"></i>
+                        )}
+                      </button>
+                    </>
+                  )}
 
-                  <button className="pl-10" onClick={onclickToggleLikePost}>
-                    {isLike ? (
-                      <i class="fa-solid fa-thumbs-up"></i>
-                    ) : (
-                      <i class="fa-regular fa-thumbs-up"></i>
-                    )}
-                  </button>
                   <br />
                   <CustomCreateComment
                     postId={postId}

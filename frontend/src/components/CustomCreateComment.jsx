@@ -2,23 +2,39 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TextInput from "./TextInput";
 import CustomButton from "./CustomButton";
-import { handleCreateComment } from "../redux/comment/commentAction";
+import { createCommentAPI } from "../services/commentService";
+import toast from "react-hot-toast";
 
 const CustomCreateComment = ({ postId, addComment }) => {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const comment = useSelector((state) => state.comment);
   const [content, setContent] = useState("");
+  const [loadCreateComment, setLoadCreateComment] = useState("");
 
-  useEffect(() => {
-    if (comment.comment) {
-      addComment(comment.comment);
+  const onclickCreateComment = async () => {
+    if (!content || !postId) {
+      return toast.error("Hãy nhập nội dung");
+    } else {
+      setLoadCreateComment(true);
+      await toast.promise(createCommentAPI(content, postId), {
+        loading: "Loading...",
+        success: (data) => {
+          setLoadCreateComment(false);
+          if (data.code === 0) {
+            addComment(data.comment);
+            setContent("");
+            return data.message;
+          } else {
+            throw new Error(data.message);
+          }
+        },
+        error: (error) => {
+          setLoadCreateComment(false);
+          return error.message;
+        },
+      });
     }
-  }, [comment.comment]);
-
-  const onclickCreateComment = () => {
-    dispatch(handleCreateComment(content, postId));
-    setContent("");
   };
 
   return (
@@ -38,10 +54,20 @@ const CustomCreateComment = ({ postId, addComment }) => {
         />
 
         <CustomButton
-          title="Comment"
-          containerStyles="bg-[#0444a4] text-white py-3 px-10 rounded-full font-semibold text-sm"
+          title={
+            loadCreateComment ? (
+              <i className="fas fa-circle-notch fa-spin"></i>
+            ) : (
+              "Comment"
+            )
+          }
+          containerStyles={`bg-[#0444a4] text-white py-3 px-10 rounded-full font-semibold text-sm ${
+            loadCreateComment && "pointer-events-none"
+          }`}
           onClick={() => {
-            onclickCreateComment();
+            if (!loadCreateComment) {
+              onclickCreateComment();
+            }
           }}
         />
       </div>

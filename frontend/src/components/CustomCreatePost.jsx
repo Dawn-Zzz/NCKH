@@ -2,12 +2,10 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TextInput from "./TextInput";
 import CustomButton from "./CustomButton";
-import { handleCreatePost } from "../redux/post/postAction";
 import { createPostAPI } from "../services/postService";
 import toast from "react-hot-toast";
 
 const CustomCreatePost = ({ addPost }) => {
-  const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
 
   const [content, setContent] = useState("");
@@ -17,45 +15,43 @@ const CustomCreatePost = ({ addPost }) => {
   const [files, setFiles] = useState([]);
 
   const onclickCreatePosts = async () => {
-    setLoadCreatePost(true);
+    if (!title || !content) {
+      return toast.error("Hãy nhập nội dung");
+    } else {
+      setLoadCreatePost(true);
 
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("content", content);
-    for (let i = 0; i < images.length; i++) {
-      formData.append("images", images[i]);
-    }
-    for (let i = 0; i < files.length; i++) {
-      formData.append("files", files[i]);
-    }
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("content", content);
+      for (let i = 0; i < images.length; i++) {
+        formData.append("images", images[i]);
+      }
+      for (let i = 0; i < files.length; i++) {
+        formData.append("files", files[i]);
+      }
 
-    await toast.promise(createPostAPI(formData), {
-      loading: "Bài viết đang được tạo...",
-      success: (data) => {
-        setLoadCreatePost(false);
-        if (data.code === 0) {
-          addPost(data);
-          setTitle("");
-          setContent("");
-          setImages([]);
-          setFiles([]);
-          return data.message;
-        } else {
-          throw new Error(data.message);
-        }
-      },
-      error: (error) => {
-        setLoadCreatePost(false);
-        return error.message;
-      },
-    });
+      await toast.promise(createPostAPI(formData), {
+        loading: "Bài viết đang được tạo...",
+        success: (data) => {
+          setLoadCreatePost(false);
+          if (data.code === 0) {
+            addPost(data);
+            setTitle("");
+            setContent("");
+            setImages([]);
+            setFiles([]);
+            return data.message;
+          } else {
+            throw new Error(data.message);
+          }
+        },
+        error: (error) => {
+          setLoadCreatePost(false);
+          return error.message;
+        },
+      });
+    }
   };
-
-  // useEffect(() => {
-  //   if (loadCreatePost) {
-  //     toast.pendding("Bài viết đang được đăng");
-  //   }
-  // }, [loadCreatePost]);
 
   return (
     <div className="bg-primary px-4 rounded-lg">

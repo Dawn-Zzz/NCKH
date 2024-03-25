@@ -21,7 +21,6 @@ const Home = () => {
 
   const addPost = (data) => {
     setPosts((posts) => [data.post, ...posts]);
-    console.log("post mới", posts);
   };
 
   useEffect(() => {
