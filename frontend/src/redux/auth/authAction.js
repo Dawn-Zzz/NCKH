@@ -100,8 +100,10 @@ export const handleLogout = () => {
 
     if (res) {
       if (res.code === 0) {
+        toast.success(res.message);
         dispatch(logoutSuccess());
       } else if (res.code === 1) {
+        toast.error(res.message);
         dispatch(logoutError());
       }
     } else {

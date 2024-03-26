@@ -41,7 +41,10 @@ const CustomCreateComment = ({ postId, addComment }) => {
     <div className="bg-primary px-4 rounded-lg">
       <div className="w-full flex items-center gap-2 py-4 border-b border-[#66666645]">
         <img
-          src={auth.pic}
+          src={
+            auth.pic ||
+            "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
+          }
           alt="User Image"
           className="w-12 h-12 rounded-full object-cover"
         />

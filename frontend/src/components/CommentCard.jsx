@@ -12,6 +12,7 @@ const CommentCard = ({ key, comment }) => {
   moment.locale("vi");
   const dispatch = useDispatch();
   const reply = useSelector((state) => state.reply);
+  const auth = useSelector((state) => state.auth);
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [replies, setReplies] = useState([]);
 
@@ -99,11 +100,15 @@ const CommentCard = ({ key, comment }) => {
         </>
       ))}
 
-      {showReplyForm && (
-        <div className="ml-11">
-          <CustomCreateReply commentId={comment._id} addReply={addReply} />
-        </div>
-      )}
+      {auth.auth ? (
+        <>
+          {showReplyForm && (
+            <div className="ml-11">
+              <CustomCreateReply commentId={comment._id} addReply={addReply} />
+            </div>
+          )}
+        </>
+      ) : null}
     </div>
   );
 };

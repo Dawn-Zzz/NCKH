@@ -149,7 +149,7 @@ const Register = () => {
         <div className="hidden w-1/2 h-full lg:flex flex-col items-center justify-center bg-yellow">
           <div className="relative w-full flex items-center justify-center">
             <img
-              // src={BgImage}
+              src={logo_utc2}
               alt="Bg Image"
               className="w-48 2xl:w-64 h-48 2xl:h-64 rounded-full object-cover"
             />

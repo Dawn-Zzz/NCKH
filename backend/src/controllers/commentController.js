@@ -121,20 +121,10 @@ let getReplyByCommentId = async (req, res) => {
   try {
     const commentId = req.params.commentId;
 
-    const userId = req.userId;
-
     if (!commentId) {
       throw {
         code: 1,
         message: "Lỗi: Thông tin chưa đủ",
-      };
-    }
-
-    let user = await userModel.findById(userId);
-    if (!user) {
-      throw {
-        code: 1,
-        message: "Đã có lỗi xảy ra: Không tìm thấy user",
       };
     }
 

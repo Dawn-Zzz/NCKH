@@ -8,4 +8,7 @@ router.post("/login", authController.login);
 router.post("/refresh", checkJWT, authController.refresh);
 router.post("/logout", authController.logout);
 
+router.get("/google", authController.loginWithGoogle);
+router.get("/google/callback", authController.loginWithGoogleCallback);
+
 module.exports = router;

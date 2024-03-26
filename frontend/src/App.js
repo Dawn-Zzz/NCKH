@@ -15,20 +15,29 @@ function App() {
 
   useEffect(() => {
     dispatch(handleRefresh());
-  }, [location.pathname]);
+  }, []);
+
+  // useEffect(() => {
+  //   if (check && !auth.auth && !(location.pathname === "/register")) {
+  //     navigate("/login");
+  //   } else if (
+  //     auth.auth &&
+  //     (location.pathname === "/login" || location.pathname === "/register")
+  //   ) {
+  //     navigate("/");
+  //   }
+
+  //   setCheck(!auth.auth);
+  // }, [auth]);
 
   useEffect(() => {
-    if (check && !auth.auth && !(location.pathname === "/register")) {
-      navigate("/login");
-    } else if (
+    if (
       auth.auth &&
       (location.pathname === "/login" || location.pathname === "/register")
     ) {
       navigate("/");
     }
-
-    setCheck(!auth.auth);
-  }, [auth]);
+  }, [auth.auth, location.pathname]);
 
   return (
     <>

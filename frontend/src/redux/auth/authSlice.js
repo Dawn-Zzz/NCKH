@@ -11,6 +11,7 @@ export const authSlice = createSlice({
     isAdmin: "",
 
     isLoading: false,
+    isInit: true,
     auth: false,
   },
   reducers: {
@@ -23,6 +24,7 @@ export const authSlice = createSlice({
       state.isAdmin = "";
 
       state.isLoading = true;
+      state.isInit = false;
       state.auth = false;
     },
     registerError: (state) => {
@@ -34,6 +36,7 @@ export const authSlice = createSlice({
       state.isAdmin = "";
 
       state.isLoading = false;
+      state.isInit = false;
       state.auth = false;
     },
     registerSuccess: (state, action) => {
@@ -45,6 +48,7 @@ export const authSlice = createSlice({
       state.isAdmin = action.payload.user.isAdmin;
 
       state.isLoading = false;
+      state.isInit = false;
       state.auth = true;
     },
     login: (state) => {
@@ -56,6 +60,7 @@ export const authSlice = createSlice({
       // state.isAdmin = "";
 
       state.isLoading = true;
+      state.isInit = false;
       state.auth = false;
     },
     loginError: (state) => {
@@ -67,6 +72,7 @@ export const authSlice = createSlice({
       state.isAdmin = "";
 
       state.isLoading = false;
+      state.isInit = false;
       state.auth = false;
     },
     loginSuccess: (state, action) => {
@@ -78,10 +84,19 @@ export const authSlice = createSlice({
       state.isAdmin = action.payload.user.isAdmin;
 
       state.isLoading = false;
+      state.isInit = false;
       state.auth = true;
     },
     refresh: (state) => {
+      state.id = "";
+      state.name = "";
+      state.email = "";
+      state.password = "";
+      state.pic = "";
+      state.isAdmin = "";
+
       state.isLoading = true;
+      state.isInit = false;
       state.auth = false;
     },
     refreshError: (state) => {
@@ -93,6 +108,7 @@ export const authSlice = createSlice({
       state.isAdmin = "";
 
       state.isLoading = false;
+      state.isInit = false;
       state.auth = false;
     },
     refreshSuccess: (state, action) => {
@@ -104,13 +120,16 @@ export const authSlice = createSlice({
       state.isAdmin = action.payload.user.isAdmin;
 
       state.isLoading = false;
+      state.isInit = false;
       state.auth = true;
     },
     logout: (state) => {
       state.isLoading = true;
+      state.isInit = false;
     },
     logoutError: (state) => {
       state.isLoading = false;
+      state.isInit = false;
     },
     logoutSuccess: (state) => {
       state.id = "";
@@ -121,6 +140,7 @@ export const authSlice = createSlice({
       state.isAdmin = "";
 
       state.isLoading = false;
+      state.isInit = false;
       state.auth = false;
     },
   },

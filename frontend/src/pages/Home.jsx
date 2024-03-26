@@ -61,7 +61,7 @@ const Home = () => {
                 ) : (
                   <div className="flex w-full h-full items-center justify-center">
                     <p className="text-lg text-ascent-2">
-                      Không tìm thấy bài viết nào
+                      Không tìm thấy thông báo nào
                     </p>
                   </div>
                 )}
@@ -69,7 +69,7 @@ const Home = () => {
             ) : (
               <>
                 {/* Hiển thị khi /community */}
-                <CustomCreatePost addPost={addPost} />
+                {auth.auth ? <CustomCreatePost addPost={addPost} /> : null}
 
                 <>
                   {post.isLoading ? (

@@ -70,17 +70,6 @@ let createPost = async (req, res) => {
 
 let getPosts = async (req, res) => {
   try {
-    const userId = req.userId;
-
-    let user = await userModel.findById(userId);
-
-    if (!user) {
-      throw {
-        code: 1,
-        message: "Đã có lỗi xảy ra: Không tìm thấy user",
-      };
-    }
-
     const posts = await postModel
       .find()
       .populate("user", "name pic")
@@ -109,17 +98,7 @@ let getPosts = async (req, res) => {
 
 let getPostDetailById = async (req, res) => {
   try {
-    const userId = req.userId;
     const postId = req.params.postId;
-
-    let user = await userModel.findById(userId);
-
-    if (!user) {
-      throw {
-        code: 1,
-        message: "Đã có lỗi xảy ra: Không tìm thấy user",
-      };
-    }
 
     const postDetail = await postModel
       .findById(postId)

@@ -8,6 +8,8 @@ import { AiOutlineInteraction } from "react-icons/ai";
 import { ImConnection } from "react-icons/im";
 import CustomButton from "../components/CustomButton";
 import logo_utc2 from "../assets/logo_utc2.png";
+import logo_google from "../assets/logo_google.png";
+import { loginWithGoogleAPI } from "../services/authService";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -17,6 +19,10 @@ const Login = () => {
 
   const onclickLogin = () => {
     dispatch(handleLogin(email, password));
+  };
+
+  const onclickLoginWithGoogle = async () => {
+    window.open("http://localhost:3001/api/auth/google", "_self");
   };
 
   return (
@@ -35,10 +41,9 @@ const Login = () => {
           <p className="text-ascent-1 text-base font-semibold">
             Log in to your account
           </p>
-          <span className="text-sm mt-2 text-ascent-2">Welcome back</span>
 
           <div
-            className="py-8 flex flex-col gap-5="
+            className="py-5 flex flex-col gap-5="
             // onSubmit={handleSubmit(onSubmit)}
           >
             <TextInput
@@ -104,6 +109,16 @@ const Login = () => {
             {/* )} */}
           </div>
 
+          <CustomButton
+            type="submit"
+            containerStyles={`inline-flex justify-center items-center rounded-md bg-white border border-black px-8 py-3 text-sm font-medium text-black outline-none`}
+            title="Login with google"
+            onClick={() => {
+              onclickLoginWithGoogle();
+            }}
+            img={logo_google}
+          ></CustomButton>
+
           <p className="text-ascent-2 text-sm text-center">
             Don't have an account?
             <Link
@@ -118,7 +133,7 @@ const Login = () => {
         <div className="hidden w-1/2 h-full lg:flex flex-col items-center justify-center bg-yellow">
           <div className="relative w-full flex items-center justify-center">
             <img
-              // src={BgImage}
+              src={logo_utc2}
               alt="Bg Image"
               className="w-48 2xl:w-64 h-48 2xl:h-64 rounded-full object-cover"
             />

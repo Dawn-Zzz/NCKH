@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { TbSocial } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TextInput from "./TextInput";
 import CustomButton from "./CustomButton";
 // import { useForm } from "react-hook-form";
@@ -29,15 +29,19 @@ const Header = () => {
   //   };
 
   //   const handleSearch = async (data) => {};
-
+  const auth = useSelector((state) => state.auth);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const onClickLogout = () => {
     const confirmed = window.confirm("Bạn có chắc chắn muốn đăng xuất?");
     if (confirmed) {
       dispatch(handleLogout());
-      dispatch(handleRefresh());
     }
+  };
+
+  const onClickLogin = () => {
+    navigate("/login");
   };
 
   return (
@@ -51,37 +55,50 @@ const Header = () => {
         </span>
       </Link>
 
-      <form
+      <div
         className="hidden md:flex items-center justify-center"
         // onSubmit={handleSubmit(handleSearch)}
       >
         <TextInput
-          placeholder="Search..."
+          placeholder="Nhập từ khóa tìm kiếm..."
           styles="w-[20rem] lg:w-[30rem]  rounded-l-full py-3 "
           //   register={register("search")}
         />
         <CustomButton
           title="Search"
-          type="submit"
+          // type="submit"
           containerStyles="bg-[#0444a4] text-white px-6 py-2.5 mt-2 rounded-r-full"
         />
-      </form>
+      </div>
 
-      {/* ICONS */}
       <div className="flex gap-4 items-center text-ascent-1 text-md md:text-xl">
-        {/* <button onClick={() => handleTheme()}>
-          {theme ? <BsMoon /> : <BsSunFill />}
-        </button> */}
         <div className="hidden lg:flex">
-          <IoMdNotificationsOutline />
+          <Link to="/message">
+            <i class="fa-regular fa-message pr-1"></i>
+          </Link>
+          <button>
+            <i class="fa-regular fa-bell pl-4"></i>
+          </button>
         </div>
 
         <div>
-          <CustomButton
-            onClick={() => onClickLogout()}
-            title="Log Out"
-            containerStyles="text-sm text-ascent-1 px-4 md:px-6 py-1 md:py-2 border border-[#666] rounded-full"
-          />
+          {auth.isLoading || auth.isInit ? null : (
+            <>
+              {auth.auth ? (
+                <CustomButton
+                  onClick={() => onClickLogout()}
+                  title="Đăng xuất"
+                  containerStyles="text-sm text-ascent-1 px-4 md:px-6 py-1 md:py-2 border border-[#666] rounded-full"
+                />
+              ) : (
+                <CustomButton
+                  onClick={() => onClickLogin()}
+                  title="Đăng nhập"
+                  containerStyles="text-sm text-ascent-1 px-4 md:px-6 py-1 md:py-2 border border-[#666] rounded-full"
+                />
+              )}
+            </>
+          )}
         </div>
       </div>
     </div>

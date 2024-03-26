@@ -4,7 +4,7 @@ const createJWT = (payload) => {
   let secret = process.env.JWT_SECRET;
   let token = null;
   try {
-    token = jwt.sign(payload, secret, { expiresIn: "1d" });
+    token = jwt.sign(payload, secret, { expiresIn: "365d" });
   } catch (error) {
     console.log(error);
   }
@@ -17,14 +17,14 @@ const checkJWT = (req, res, next) => {
   if (!token) {
     return res.status(200).json({
       code: 1,
-      message: "Hãy đăng nhập1",
+      message: "Đăng nhập để thực hiện thao tác này",
     });
   }
   jwt.verify(token, process.env.JWT_SECRET, async (error, resutl) => {
     if (error) {
       return res.status(200).json({
         code: 1,
-        message: "Hãy đăng nhập2",
+        message: "Đăng nhập để thực hiện thao tác này",
       });
     }
 

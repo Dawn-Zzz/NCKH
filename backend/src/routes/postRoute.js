@@ -17,12 +17,8 @@ router.post(
   postController.createPost
 );
 
-router.get("/getPosts", checkJWT, postController.getPosts);
-router.get(
-  "/getPostDetail/:postId",
-  checkJWT,
-  postController.getPostDetailById
-);
+router.get("/getPosts", postController.getPosts);
+router.get("/getPostDetail/:postId", postController.getPostDetailById);
 router.post("/toggleLikePost", checkJWT, postController.toggleLikePost);
 
 module.exports = router;
