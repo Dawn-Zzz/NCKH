@@ -5,9 +5,7 @@ import CustomButton from "./CustomButton";
 import { createPostAPI } from "../services/postService";
 import toast from "react-hot-toast";
 
-const CustomCreatePost = ({ addPost }) => {
-  const auth = useSelector((state) => state.auth);
-
+const CustomCreatePost = ({ addPost, auth }) => {
   const [content, setContent] = useState("");
   const [loadCreatePost, setLoadCreatePost] = useState(false);
   const [title, setTitle] = useState("");
@@ -57,7 +55,7 @@ const CustomCreatePost = ({ addPost }) => {
     <div className="bg-primary px-4 rounded-lg">
       <div className="w-full flex items-center gap-2 py-4 border-b border-[#66666645]">
         <img
-          src={auth.pic}
+          src={auth?.pic}
           alt="User Image"
           className="w-14 h-14 rounded-full object-cover"
         />

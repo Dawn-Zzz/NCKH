@@ -11,8 +11,6 @@ const PostCard = ({ post }) => {
     setTotalLike(post?.likes?.length);
   }, [post.likes]);
 
-  console.log(post);
-
   return (
     <Link to={`/community/post/${post._id}`}>
       <div className="mb-2 bg-primary p-4 rounded-xl">

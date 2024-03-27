@@ -69,7 +69,9 @@ const Home = () => {
             ) : (
               <>
                 {/* Hiển thị khi /community */}
-                {auth.auth ? <CustomCreatePost addPost={addPost} /> : null}
+                {auth.auth ? (
+                  <CustomCreatePost addPost={addPost} auth={auth} />
+                ) : null}
 
                 <>
                   {post.isLoading ? (

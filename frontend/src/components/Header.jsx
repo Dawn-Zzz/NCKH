@@ -33,10 +33,12 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const pathname = window.location.pathname;
+
   const onClickLogout = () => {
     const confirmed = window.confirm("Bạn có chắc chắn muốn đăng xuất?");
     if (confirmed) {
-      dispatch(handleLogout());
+      dispatch(handleLogout(navigate));
     }
   };
 
@@ -55,29 +57,42 @@ const Header = () => {
         </span>
       </Link>
 
-      <div
-        className="hidden md:flex items-center justify-center"
-        // onSubmit={handleSubmit(handleSearch)}
-      >
-        <TextInput
-          placeholder="Nhập từ khóa tìm kiếm..."
-          styles="w-[20rem] lg:w-[30rem]  rounded-l-full py-3 "
-          //   register={register("search")}
-        />
-        <CustomButton
-          title="Search"
-          // type="submit"
-          containerStyles="bg-[#0444a4] text-white px-6 py-2.5 mt-2 rounded-r-full"
-        />
-      </div>
+      {pathname === "/message" ? (
+        <div className="text-xl md:text-1xl font-bold">Nhắn tin</div>
+      ) : (
+        <>
+          <div
+            className="hidden md:flex items-center justify-center"
+            // onSubmit={handleSubmit(handleSearch)}
+          >
+            <TextInput
+              placeholder="Nhập từ khóa tìm kiếm..."
+              styles="w-[20rem] lg:w-[30rem]  rounded-l-full py-3 "
+              //   register={register("search")}
+            />
+            <CustomButton
+              title="Search"
+              // type="submit"
+              containerStyles="bg-[#0444a4] text-white px-6 py-2.5 mt-2 rounded-r-full"
+            />
+          </div>
+        </>
+      )}
 
       <div className="flex gap-4 items-center text-ascent-1 text-md md:text-xl">
         <div className="hidden lg:flex">
-          <Link to="/message">
-            <i class="fa-regular fa-message pr-1"></i>
-          </Link>
+          {pathname === "/message" ? (
+            <Link to="/">
+              <i class="fa-solid fa-house"></i>
+            </Link>
+          ) : (
+            <Link to="/message">
+              <i class="fa-solid fa-message pr-1"></i>
+            </Link>
+          )}
+
           <button>
-            <i class="fa-regular fa-bell pl-4"></i>
+            <i class="fa-solid fa-bell pl-4"></i>
           </button>
         </div>
 

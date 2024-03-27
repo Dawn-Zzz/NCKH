@@ -1,5 +1,4 @@
 import toast from "react-hot-toast";
-
 import {
   loginAPI,
   loginWithGoogleAPI,
@@ -91,8 +90,7 @@ export const handleRefresh = () => {
     }
   };
 };
-
-export const handleLogout = () => {
+export const handleLogout = (navigate) => {
   return async (dispatch, getState) => {
     dispatch(logout());
 
@@ -102,6 +100,8 @@ export const handleLogout = () => {
       if (res.code === 0) {
         toast.success(res.message);
         dispatch(logoutSuccess());
+        // Use history object to navigate
+        navigate("/login");
       } else if (res.code === 1) {
         toast.error(res.message);
         dispatch(logoutError());
